@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dremio-coordinator
+  namespace: dremio-ns
+  labels:
+    app: dremio-coordinator
+spec:
+  serviceName: "dremio-service"  # Serviço associado
+  replicas: 1  # Apenas 1 Coordinator (Master)
+  selector:
+    matchLabels:
+      app: dremio-coordinator
+  template:
+    metadata:
+      labels:
+        app: dremio-coordinator
+    spec:
+      securityContext:
+        runAsUser: 999  # UID do usuário dremio
+        runAsGroup: 999  # GID do grupo dremio
+        fsGroup: 999  # Permissões para volumes montados
+      containers:
+      - name: dremio-oss
+        image: dremio/dremio-oss:latest
+        ports:
+        - containerPort: 9047  # Interface web
+        - containerPort: 31010 # Porta JDBC/ODBC
+        volumeMounts:
+        - name: data-volume
+          mountPath: /opt/dremio/data  # Diretório de metadados
+        - name: logs-volume
+          mountPath: /var/log/dremio  # Diretório de logs
+        - name: tmp-volume
+          mountPath: /tmp  # Diretório temporário
+        env:
+        - name: DREMIO_ROLE
+          value: "coordinator"  # Define como Coordinator
+        - name: DREMIO_MASTER
+          value: "true"  # Master Coordinator
+        - name: JAVA_HEAP_SIZE
+          value: "4g"  # Heap Java
+        - name: MAX_DIRECT_MEMORY
+          value: "6g"  # Memória direta para consultas
+        - name: TZ
+          value: "America/Campo_Grande"
+        - name: JAVA_OPTS
+          value: "-Duser.timezone=America/Campo_Grande"
+        - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
+          value: "-Dpaths.dist=file:///opt/dremio/data/dist"  
+        resources:
+          requests:
+            memory: "5Gi"
+            cpu: "2"
+          limits:
+            memory: "6Gi"
+            cpu: "2.5"
+  volumeClaimTemplates:
+  - metadata:
+      name: data-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 20Gi
+  - metadata:
+      name: logs-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
+  - metadata:
+      name: tmp-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
