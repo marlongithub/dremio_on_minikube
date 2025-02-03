@@ -27,11 +27,17 @@ minikube start --cpus=12 --memory=22g
   
   
   kubectl apply -f .\dremio-conf.yaml
+  
   kubectl apply -f .\zk-service.yaml
+  
   kubectl apply -f .\deployment_coord.yaml
+  
   kubectl get all
+  
   kubectl apply -f .\service.yaml
-  Aguarde 1 minuto!  
+  
+  Aguarde 1 minuto!
+  
   kubectl apply -f .\deployment_executor.yaml
   
 ## Ver resultado  
