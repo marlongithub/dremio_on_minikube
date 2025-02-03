@@ -6,8 +6,8 @@ metadata:
   labels:
     app: dremio-coordinator
 spec:
-  serviceName: "dremio-service"  # Serviço associado
-  replicas: 1  # Apenas 1 Coordinator (Master)
+  serviceName: "dremio-service"
+  replicas: 1
   selector:
     matchLabels:
       app: dremio-coordinator
@@ -17,9 +17,9 @@ spec:
         app: dremio-coordinator
     spec:
       securityContext:
-        runAsUser: 999  # UID do usuário dremio
-        runAsGroup: 999  # GID do grupo dremio
-        fsGroup: 999  # Permissões para volumes montados
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
       containers:
       - name: dremio-oss
         image: dremio/dremio-oss:latest
@@ -28,26 +28,29 @@ spec:
         - containerPort: 31010 # Porta JDBC/ODBC
         volumeMounts:
         - name: data-volume
-          mountPath: /opt/dremio/data  # Diretório de metadados
+          mountPath: /opt/dremio/data
         - name: logs-volume
-          mountPath: /var/log/dremio  # Diretório de logs
+          mountPath: /var/log/dremio
         - name: tmp-volume
-          mountPath: /tmp  # Diretório temporário
+          mountPath: /tmp
+        - name: dremio-conf-volume
+          mountPath: /opt/dremio/conf/dremio.conf
+          subPath: dremio.conf
         env:
         - name: DREMIO_ROLE
-          value: "coordinator"  # Define como Coordinator
+          value: "coordinator"
         - name: DREMIO_MASTER
-          value: "true"  # Master Coordinator
+          value: "true"
         - name: JAVA_HEAP_SIZE
-          value: "4g"  # Heap Java
+          value: "4g"
         - name: MAX_DIRECT_MEMORY
-          value: "6g"  # Memória direta para consultas
+          value: "2g"
         - name: TZ
           value: "America/Campo_Grande"
         - name: JAVA_OPTS
           value: "-Duser.timezone=America/Campo_Grande"
         - name: DREMIO_JAVA_SERVER_EXTRA_OPTS
-          value: "-Dpaths.dist=file:///opt/dremio/data/dist"  
+          value: "-Dpaths.dist=file:///opt/dremio/data/dist"
         resources:
           requests:
             memory: "5Gi"
@@ -55,6 +58,10 @@ spec:
           limits:
             memory: "6Gi"
             cpu: "2.5"
+      volumes:
+      - name: dremio-conf-volume
+        configMap:
+          name: dremio-conf
   volumeClaimTemplates:
   - metadata:
       name: data-volume

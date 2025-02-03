@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-conf
+  namespace: dremio-ns
+data:
+  dremio.conf: |
+    paths: {
+      local: "/opt/dremio/data",
+      dist: "file:///opt/dremio/acceleration"
+    }
+    
+    services: {
+      coordinator.enabled: true,
+      coordinator.master.enabled: true,
+      executor.enabled: true,
+      coordinator.master.embedded-zookeeper.enabled: true
+    }
+    #Maneira cooreta de referenciar o zookeeper quando ele é embed ao dremio. 
+    #Para produção deve usar zookeeper externo e com número impar de instâncias, recomendado 3 máquinas físicas, não vms, com zookeeper.
+    #https://docs.dremio.com/current/get-started/cluster-deployments/architecture/zookeeper/
+    #https://docs.dremio.com/current/get-started/cluster-deployments/customizing-configuration/dremio-conf/zookeeper-config/
+    zookeeper: "dremio-coordinator.dremio-ns.svc.cluster.local:2181"
+
+
+    
