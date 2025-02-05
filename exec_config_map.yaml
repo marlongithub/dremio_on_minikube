@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-exctor-conf
+  namespace: dremio-ns
+data:
+  dremio.conf: |
+    paths: {
+      local: "/opt/dremio/data",
+      dist: "file:///opt/dremio/acceleration",
+      db: "/opt/dremio/data/db",
+      spilling: ["/opt/dremio/data/spill"],
+      accelerator: "/opt/dremio/acceleration/accelerator",
+      downloads: "/opt/dremio/acceleration/downloads",
+      uploads: "/opt/dremio/acceleration/uploads",
+      results: "/opt/dremio/acceleration/results",
+      scratch: "/opt/dremio/acceleration/scratch"
+    }
+
+    services: {
+      coordinator.enabled: false,
+      executor.enabled: true
+    }
+
+    # O Executor precisa apontar para o Zookeeper correto
+    zookeeper: "zookeeper.dremio-ns.svc.cluster.local:2181"

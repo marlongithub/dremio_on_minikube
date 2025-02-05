@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: dremio-coordinator
+  namespace: dremio-ns
+  labels:
+    app: dremio-coordinator
+spec:
+  serviceName: "dremio-service"
+  replicas: 1
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain  # Mantém os volumes após a exclusão do StatefulSet
+    whenScaled: Retain
+  selector:
+    matchLabels:
+      app: dremio-coordinator
+  template:
+    metadata:
+      labels:
+        app: dremio-coordinator
+    spec:
+      securityContext:
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+      - name: dremio-oss
+        image: dremio/dremio-oss:latest
+        ports:
+        - containerPort: 9047  # Interface web
+        - containerPort: 31010 # Porta JDBC/ODBC
+        volumeMounts:
+        - name: data-volume
+          mountPath: /opt/dremio/data
+        - name: logs-volume
+          mountPath: /var/log/dremio
+        - name: tmp-volume
+          mountPath: /tmp
+        - name: dremio-conf-volume
+          mountPath: /opt/dremio/conf/dremio.conf
+          subPath: dremio.conf
+        - name: acceleration-volume
+          mountPath: /opt/dremio/acceleration
+        env:
+        - name: DREMIO_ROLE
+          value: "coordinator"
+        - name: DREMIO_MASTER
+          value: "true"
+        - name: JAVA_HEAP_SIZE
+          value: "4g"
+        - name: MAX_DIRECT_MEMORY
+          value: "2g"
+        - name: TZ
+          value: "America/Campo_Grande"
+        - name: JAVA_OPTS
+          value: "-Duser.timezone=America/Campo_Grande"
+        resources:
+          requests:
+            memory: "5Gi"
+            cpu: "2"
+          limits:
+            memory: "6Gi"
+            cpu: "2.5"
+      volumes:
+      - name: dremio-conf-volume
+        configMap:
+          name: dremio-coord-conf
+  volumeClaimTemplates:
+  - metadata:
+      name: data-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 20Gi
+  - metadata:
+      name: logs-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
+  - metadata:
+      name: tmp-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi
+  - metadata:
+      name: acceleration-volume
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi

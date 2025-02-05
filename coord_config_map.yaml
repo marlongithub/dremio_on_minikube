@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dremio-coord-conf
+  namespace: dremio-ns
+data:
+  dremio.conf: |
+    paths: {
+      local: "/opt/dremio/data",
+      dist: "pdfs://"${paths.local}"/pdfs",
+      db: ${paths.local}/db,
+      spilling: [${paths.local}/spill],
+      accelerator: ${paths.dist}/accelerator,
+      downloads: ${paths.dist}/downloads,
+      uploads: ${paths.dist}/uploads,
+      results: ${paths.dist}/results,
+      scratch: ${paths.dist}/scratch
+    }
+
+    services: {
+      coordinator: {
+        enabled: true,
+        auto-upgrade: false,
+        master: {
+          enabled: true
+        },
+        web: {
+          enabled: true,
+          port: 9047
+        },
+        client-endpoint: {
+          port: 31010
+        }
+      },
+      executor: {
+        enabled: false
+      },
+      fabric: {
+        port: 45678,
+        memory: {
+          reservation: 100M
+        }
+      }
+    }
+
+    zookeeper: "zookeeper.dremio-ns.svc.cluster.local:2181"
