@@ -27,13 +27,7 @@ O último comando **`minikube start`** encontrado no log foi:
 minikube start --cpus=12 --memory=22g
 ```
 
-Isso indica que na sua **última execução** você usou **12 CPUs** e **22 GB de memória**.
-
-Se precisar repetir o mesmo comando para iniciar o Minikube com essa configuração, basta rodar:
-
-```sh
-minikube start --cpus=12 --memory=22g
-```
+ **Última execução** foi **12 CPUs** e **22 GB de memória** mas pode mudar esses valores a depender do tipo de implantação.
 
 Caso queira verificar se o Minikube está rodando corretamente, você pode executar:
 
