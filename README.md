@@ -109,6 +109,53 @@ statefulset.apps/dremio-executor      4/4     38s
 ```
 
 
+### Para desativar o cluster por completo, siga estas instruções em sequência:
+
+1. **Excluir o StatefulSet dos executores:**
+
+   ```bash
+   kubectl delete statefulset dremio-executor
+   ```
+
+   ste comando remove o StatefulSet responsável pelos pods dos executores.s volumes persistentes associados não são excluídos automaticamente.citeturn0search7
+2. **Excluir o StatefulSet do coordenador:**
+
+   ```bash
+   kubectl delete statefulset dremio-coordinator
+   ```
+
+   emove o StatefulSet que gerencia o pod do coordenador.ovamente, os volumes persistentes permanecem intactos.citeturn0search7
+3. **Excluir o Deployment do Zookeeper:**
+
+   ```bash
+   kubectl delete deployment zookeeper
+   ```
+
+   emove o Deployment associado ao Zookeeper.s pods gerenciados por este Deployment serão terminados.citeturn0search3
+4. **Excluir os Services associados:**
+
+   ```bash
+   kubectl delete service dremio-service zookeeper
+   ```
+
+   emove os serviços `dremio-service` e `zookeeper`, interrompendo o acesso de rede associado a eles.citeturn0search3
+5. **Verificar a remoção dos recursos:**
+
+   ```bash
+   kubectl get all
+   ```
+
+   Este comando lista todos os recursos restantes no namespace atual.ertifique-se de que todos os componentes relacionados ao cluster foram removidos conforme esperado.
+6. **Excluir os PersistentVolumeClaims (PVCs) associados (opcional):**
+
+   e você deseja liberar o armazenamento persistente utilizado pelos pods, execute:
+   ```bash
+   kubectl delete pvc -l app=dremio
+   ```
+
+   Este comando remove todos os PVCs com o rótulo `app=dremio`.ertifique-se de que os dados armazenados não são mais necessários antes de realizar esta etapa, pois a exclusão dos PVCs resulta na perda dos dados associados.citeturn0search7
+eguindo estas etapas, você desativará completamente o cluster descrito, garantindo que todos os componentes sejam removidos de forma ordenada.
+
 
 
 
