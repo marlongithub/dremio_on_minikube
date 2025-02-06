@@ -34,3 +34,11 @@ Caso queira verificar se o Minikube está rodando corretamente, você pode execu
 ```sh
 minikube status
 ```
+## Se a persistência já foi criada, não há necessidade de executar os yaml referentes à persistência
+Verifique assim:
+```sh
+kubectl get pv,pvc
+```
+Se for mudar para outro tipo de persitência, delete a atual e configure nos yamls a persitência e a correta referência.
+
+
