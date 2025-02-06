@@ -40,7 +40,3 @@ Caso queira verificar se o Minikube está rodando corretamente, você pode execu
 ```sh
 minikube status
 ```
-
-Se precisar ajustar algo ou tiver mais dúvidas, só avisar! 🚀
-
-
