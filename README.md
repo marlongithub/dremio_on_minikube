@@ -56,7 +56,24 @@ kubectl scale deployment zookeeper --replicas=0
 ```sh
 kubectl delete deployment zookeeper
 ```
-
+## Ver todos arquivos da pasta para poder começar implantação
+```sh
+ls
+    Diretório: C:\...
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        04/02/2025     18:40           1026 coord_config_map.yaml
+-a----        04/02/2025     18:38           2490 coord_statefulset.yaml
+-a----        04/02/2025     18:15            787 exec_config_map.yaml
+-a----        04/02/2025     20:28           2130 exec_statefulset.yaml
+-a----        04/02/2025     17:05            875 pv_pvc_coord.yaml
+-a----        04/02/2025     17:07            648 pv_pvc_exctor.yaml
+-a----        16/01/2025     17:02            136 README.md
+-a----        15/01/2025     10:07            542 servico_principal.yaml
+-a----        03/02/2025     11:55            197 vm_netshoot.yaml
+-a----        04/02/2025     18:10            486 zookeeper_deploy.yaml
+-a----        04/02/2025     18:28            198 zookeeper_service.yaml
+```
 
 
 
