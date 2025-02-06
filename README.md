@@ -41,4 +41,13 @@ kubectl get pv,pvc
 ```
 Se for mudar para outro tipo de persitência, delete a atual e configure nos yamls a persitência e a correta referência.
 
+Se precisar setar as réplicas para zero 
+```sh
+kubectl scale statefulset dremio-coordinator --replicas=0
+```
+statefulset.apps/dremio-coordinator scaled
+```sh
+kubectl scale statefulset dremio-executor --replicas=0
+```
+
 
