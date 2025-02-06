@@ -76,12 +76,13 @@ Mode                 LastWriteTime         Length Name
 ```
 
 ## Sequência de aplicação com kubectl apply -f [file name]
-1 - Aplicar os config maps do coordinator e executor
-2 - Aplicar deploy e service do Zookeeper
-3 - Aplicar o serviço principal do Dremio
-4 - Aplicar statefulset do coordinator
-5 - Verificar o estado com kubectl get all (deve estar no namespace dremio-ns como padrão)
-6 - Aplicar o statefulset dos execturos (veja antes no yaml se a quantidade de réplicas está correta)
+1. Aplicar os ConfigMaps do coordinator e executor.
+2. Aplicar o Deployment e Service do Zookeeper.
+3. Aplicar o serviço principal do Dremio.
+4. Aplicar o StatefulSet do coordinator.
+5. Verificar o estado com `kubectl get all` (certifique-se de que o namespace padrão é `dremio-ns`).
+6. Aplicar o StatefulSet dos executores (verifique antes no YAML se a quantidade de réplicas está correta).
+
 ```sh
 kubectl get all
 NAME                             READY   STATUS    RESTARTS   AGE
