@@ -138,7 +138,7 @@ statefulset.apps/dremio-executor      4/4     38s
    kubectl delete service dremio-service zookeeper
    ```
 
-   emove os serviços `dremio-service` e `zookeeper`, interrompendo o acesso de rede associado a eles.citeturn0search3
+   Remove os serviços `dremio-service` e `zookeeper`, interrompendo o acesso de rede associado a eles.citeturn0search3
 5. **Verificar a remoção dos recursos:**
 
    ```bash
@@ -146,7 +146,7 @@ statefulset.apps/dremio-executor      4/4     38s
    ```
 
    Este comando lista todos os recursos restantes no namespace atual.ertifique-se de que todos os componentes relacionados ao cluster foram removidos conforme esperado.
-6. **Excluir os PersistentVolumeClaims (PVCs) associados (opcional):**
+6. **Excluir os PersistentVolumeClaims (PVCs) associados (opcional e pode perder os dados do Dremio!):**
 
    e você deseja liberar o armazenamento persistente utilizado pelos pods, execute:
    ```bash
