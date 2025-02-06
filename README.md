@@ -49,5 +49,47 @@ statefulset.apps/dremio-coordinator scaled
 ```sh
 kubectl scale statefulset dremio-executor --replicas=0
 ```
+## Caso necessitar desligar o zookeeper
+```sh
+kubectl scale deployment zookeeper --replicas=0
+```
+```sh
+kubectl delete deployment zookeeper
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
