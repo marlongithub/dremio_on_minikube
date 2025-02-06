@@ -152,6 +152,7 @@ statefulset.apps/dremio-executor      4/4     38s
    ```bash
    kubectl delete pvc -l app=dremio
    ```
+   Veja como deletar os pv do namespace dremio-ns, tenha cautela.
 
    Este comando remove todos os PVCs com o rótulo `app=dremio`.ertifique-se de que os dados armazenados não são mais necessários antes de realizar esta etapa, pois a exclusão dos PVCs resulta na perda dos dados associados.citeturn0search7
 eguindo estas etapas, você desativará completamente o cluster descrito, garantindo que todos os componentes sejam removidos de forma ordenada.
